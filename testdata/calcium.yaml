@@ -1,4 +1,6 @@
-use: "aaa"
-run: |
-  echo "hoge"
-  echo "huga"
+task:
+  use: "aaa"
+  run: |
+    echo "hoge"
+    echo "huga"
+    ls

@@ -1,12 +1,12 @@
-package commands
+package calcium
 
 import (
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
 
-type Command struct {
-	Task *Task
+type Calcium struct {
+	Task *Task `yaml:"task"`
 }
 
 type Task struct {
@@ -14,8 +14,8 @@ type Task struct {
 	Run string `yaml:"run"`
 }
 
-func Parse(b []byte) (*Command, error) {
-	c := &Command{
+func Parse(b []byte) (*Calcium, error) {
+	c := &Calcium{
 		Task: &Task{},
 	}
 

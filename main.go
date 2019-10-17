@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 
-	"github.com/NasSilverBullet/calicium/pkg/commands"
+	"github.com/NasSilverBullet/calcium/pkg/calcium"
 	"github.com/pkg/errors"
 )
 
@@ -22,13 +23,18 @@ func run() error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	fmt.Println(b)
 
-	c, err := commands.Parse(b)
+	ca, err := calcium.Parse(b)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
-	fmt.Println(c)
+	cmd := exec.Command("sh", "-c", ca.Task.Run)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	fmt.Fprintln(os.Stdout, string(out))
 	return nil
 }
