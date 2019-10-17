@@ -1,0 +1,4 @@
+use: "aaa"
+run: |
+  echo "hoge"
+  echo "huga"
