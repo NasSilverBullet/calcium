@@ -46,10 +46,6 @@ func NewRootCmd() *cobra.Command {
 
 			return nil
 		},
-		PreRunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println("hoge")
-			return nil
-		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			for _, t := range ts {
 				cmd := exec.Command("sh", "-c", t.Run)
