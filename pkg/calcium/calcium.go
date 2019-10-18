@@ -6,8 +6,11 @@ import (
 )
 
 type Calcium struct {
-	Task *Task `yaml:"task"`
+	Version string `yaml:"version"`
+	Tasks   `yaml:"tasks"`
 }
+
+type Tasks []*Task
 
 type Task struct {
 	Use string `yaml:"use"`
@@ -16,7 +19,7 @@ type Task struct {
 
 func Parse(b []byte) (*Calcium, error) {
 	c := &Calcium{
-		Task: &Task{},
+		Tasks: Tasks{},
 	}
 
 	if err := yaml.Unmarshal(b, c); err != nil {

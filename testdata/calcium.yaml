@@ -1,6 +1,13 @@
-task:
-  use: "aaa"
-  run: |
-    echo "hoge"
-    echo "huga"
-    ls
+version: 1
+
+tasks:
+
+  - task:
+    use: "aaa"
+    run: |
+      ls
+
+  - task:
+    use: "aaa"
+    run: |
+      pwd

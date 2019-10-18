@@ -29,12 +29,16 @@ func run() error {
 		return errors.WithStack(err)
 	}
 
-	cmd := exec.Command("sh", "-c", ca.Task.Run)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return errors.WithStack(err)
+	for _, t := range ca.Tasks {
+		cmd := exec.Command("sh", "-c", t.Run)
+
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		fmt.Fprintln(os.Stdout, string(out))
 	}
 
-	fmt.Fprintln(os.Stdout, string(out))
 	return nil
 }
