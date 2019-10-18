@@ -11,22 +11,47 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	ca *calcium.Calcium
+	ts calcium.Tasks
+)
+
 func NewRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ca",
 		Short: "calcium",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Args: func(cmd *cobra.Command, args []string) error {
 			b, err := ioutil.ReadFile("testdata/calcium.yaml")
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 
-			ca, err := calcium.Parse(b)
+			ca, err = calcium.Parse(b)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 
-			for _, t := range ca.Tasks {
+			for _, a := range args {
+				for _, t := range ca.Tasks {
+					if t.Use != a {
+						continue
+					}
+					ts = append(ts, t)
+				}
+			}
+
+			if len(ts) == 0 {
+				return fmt.Errorf("Task definition does not exist")
+			}
+
+			return nil
+		},
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			fmt.Println("hoge")
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			for _, t := range ts {
 				cmd := exec.Command("sh", "-c", t.Run)
 
 				out, err := cmd.CombinedOutput()

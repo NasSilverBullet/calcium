@@ -8,6 +8,6 @@ tasks:
       ls
 
   - task:
-    use: "aaa"
+    use: "bbb"
     run: |
       pwd
