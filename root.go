@@ -12,7 +12,7 @@ import (
 
 var (
 	ca *calcium.Calcium
-	ts calcium.Tasks
+	tt *calcium.Task
 )
 
 func NewRootCmd() *cobra.Command {
@@ -30,36 +30,35 @@ func NewRootCmd() *cobra.Command {
 				return err
 			}
 
-			for _, a := range args {
-				for _, t := range ca.Tasks {
-					if t.Use != a {
-						continue
-					}
-					ts = append(ts, t)
+			for _, t := range ca.Tasks {
+				if t.Use != args[0] {
+					continue
 				}
+				tt = t
 			}
-
-			if len(ts) == 0 {
+			if tt == nil {
 				return fmt.Errorf("Task definition does not exist")
 			}
 
 			return nil
 		},
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			tt.Run = fmt.Sprintf(tt.RunRaw, args[1])
+			return nil
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			for _, t := range ts {
-				if t.Description != "" {
-					cmd.Printf("<<< %s >>>\n\n", t.Description)
-				}
-
-				c := exec.Command("sh", "-c", t.Run)
-
-				out, err := c.CombinedOutput()
-				if err != nil {
-					return errors.WithStack(err)
-				}
-
-				cmd.Print(string(out))
+			if tt.Description != "" {
+				cmd.Printf("<<< %s >>>\n\n", tt.Description)
 			}
+
+			c := exec.Command("sh", "-c", tt.Run)
+
+			out, err := c.CombinedOutput()
+			if err != nil {
+				return errors.WithStack(err)
+			}
+
+			cmd.Print(string(out))
 
 			return nil
 		},

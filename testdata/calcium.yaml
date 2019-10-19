@@ -18,3 +18,8 @@ tasks:
       cd
       root_files=`ls`
       echo $root_files
+
+  - task:
+    use: "ddd"
+    run: |
+      echo %s
