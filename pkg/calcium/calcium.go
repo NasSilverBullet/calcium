@@ -2,6 +2,7 @@ package calcium
 
 import (
 	"fmt"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -53,6 +54,32 @@ func (ca *Calcium) GetTask(use string) (*Task, error) {
 	return nil, fmt.Errorf("Task definition does not exist")
 }
 
-func (t *Task) Parse() (string, error) {
-	return "", nil
+func (t *Task) Parse(argFlags map[string]string) (string, error) {
+	script := t.Run
+
+	for _, f := range t.Flags {
+		mustache := fmt.Sprintf("{{%s}}", f.Name)
+
+		if strings.Index(t.Run, mustache) < 0 {
+			return "", fmt.Errorf("Can not find %s flag in run section", f.Name)
+		}
+
+		var parsed bool
+
+		if af := argFlags[fmt.Sprintf("-%s", f.Short)]; af != "" {
+			script = strings.ReplaceAll(script, mustache, af)
+			parsed = true
+		}
+
+		if af := argFlags[fmt.Sprintf("--%s", f.Long)]; af != "" {
+			script = strings.ReplaceAll(script, mustache, af)
+			parsed = true
+		}
+
+		if !parsed {
+			return "", fmt.Errorf("No argument : %s were given", f.Name)
+		}
+	}
+
+	return script, nil
 }

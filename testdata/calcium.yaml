@@ -3,28 +3,10 @@ version: 1
 tasks:
 
   - task:
-    use: "aaa"
-    run: |
-      ls
-
-  - task:
-    use: "bbb"
-    run: |
-      pwd
-
-  - task: this is "ccc" command
-    use: "ccc"
-    run: |
-      cd
-      root_files=`ls`
-      echo $root_files
-
-  - task:
-    use: "ddd"
+    use: "echocmd"
     flags:
-      - name: sss
-        short: s
-        long: str
-        type: string
+      - name: val
+        short: v
+        long: value
     run: |
-      echo %s
+      echo {{val}}

@@ -36,7 +36,12 @@ func (c *CLI) Run(args []string) error {
 		return errors.WithStack(err)
 	}
 
-	if err := c.Execute(t, fs); err != nil {
+	script, err := t.Parse(fs)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := c.Execute(script); err != nil {
 		return errors.WithStack(err)
 	}
 
@@ -62,7 +67,7 @@ func (c *CLI) ParseFlags(args []string) (map[string]string, error) {
 		return nil, errors.WithStack(fmt.Errorf("InValid Flags"))
 	}
 
-	var flagMap map[string]string
+	flagMap := map[string]string{}
 
 	for i, a := range args {
 		if i%2 != 0 {
@@ -70,12 +75,12 @@ func (c *CLI) ParseFlags(args []string) (map[string]string, error) {
 		}
 
 		if strings.HasPrefix(a, "--") {
-			flagMap[strings.Replace(a, "--", "", 1)] = args[i+1]
+			flagMap[a] = args[i+1]
 			continue
 		}
 
 		if strings.HasPrefix(a, "-") {
-			flagMap[strings.Replace(a, "-", "", 1)] = args[i+1]
+			flagMap[a] = args[i+1]
 			continue
 		}
 	}
@@ -83,17 +88,8 @@ func (c *CLI) ParseFlags(args []string) (map[string]string, error) {
 	return flagMap, nil
 }
 
-func (c *CLI) Execute(t *calcium.Task, fs map[string]string) error {
-	if t == nil {
-		return errors.WithStack(fmt.Errorf("No tasks"))
-	}
-
-	if t.Description != "" {
-		fmt.Fprintf(c.Out, "<<< %s >>>\n\n", t.Description)
-	}
-
-	// TODO parse flag
-	cmd := exec.Command("sh", "-c", t.Run)
+func (c *CLI) Execute(s string) error {
+	cmd := exec.Command("sh", "-c", s)
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
