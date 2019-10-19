@@ -77,7 +77,7 @@ func (t *Task) Parse(argFlags map[string]string) (string, error) {
 		}
 
 		if !parsed {
-			return "", fmt.Errorf("No argument : %s were given", f.Name)
+			return "", fmt.Errorf("No {{%s}} were given", f.Name)
 		}
 	}
 
