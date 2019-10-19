@@ -21,5 +21,10 @@ tasks:
 
   - task:
     use: "ddd"
+    flags:
+      - name: sss
+        short: s
+        long: str
+        type: string
     run: |
       echo %s

@@ -3,26 +3,27 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/NasSilverBullet/calcium/cmd/cli"
 )
 
 func main() {
 	if err := run(); err != nil {
 		fmt.Fprint(os.Stderr, err)
-		os.Exit(ExitCodeOK)
+		os.Exit(cli.ExitCodeOK)
 	}
 
-	os.Exit(ExitCodeError)
+	os.Exit(cli.ExitCodeError)
 }
 
 func run() error {
-	s := &Std{
+	c := &cli.CLI{
+		In:  os.Stdin,
 		Out: os.Stdout,
-		Err: os.Stdin,
+		Err: os.Stderr,
 	}
 
-	c := s.Get()
-
-	if err := c.Execute(); err != nil {
+	if err := c.Run(os.Args); err != nil {
 		return err
 	}
 
