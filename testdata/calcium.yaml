@@ -11,3 +11,10 @@ tasks:
     use: "bbb"
     run: |
       pwd
+
+  - task: this is "ccc" command
+    use: "ccc"
+    run: |
+      cd
+      root_files=`ls`
+      echo $root_files

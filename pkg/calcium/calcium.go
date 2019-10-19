@@ -13,8 +13,9 @@ type Calcium struct {
 type Tasks []*Task
 
 type Task struct {
-	Use string `yaml:"use"`
-	Run string `yaml:"run"`
+	Description string `yaml:"task"`
+	Use         string `yaml:"use"`
+	Run         string `yaml:"run"`
 }
 
 func Parse(b []byte) (*Calcium, error) {

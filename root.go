@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"os/exec"
 
 	"github.com/NasSilverBullet/calcium/pkg/calcium"
@@ -48,14 +47,18 @@ func NewRootCmd() *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			for _, t := range ts {
-				cmd := exec.Command("sh", "-c", t.Run)
+				if t.Description != "" {
+					cmd.Printf("<<< %s >>>\n\n", t.Description)
+				}
 
-				out, err := cmd.CombinedOutput()
+				c := exec.Command("sh", "-c", t.Run)
+
+				out, err := c.CombinedOutput()
 				if err != nil {
 					return errors.WithStack(err)
 				}
 
-				fmt.Fprint(os.Stdout, string(out))
+				cmd.Print(string(out))
 			}
 
 			return nil
