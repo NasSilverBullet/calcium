@@ -3,14 +3,15 @@ version: 1
 tasks:
 
   - task:
-    use: "echocmd"
-    flags:
-      - name: val
-        short: v
-        long: value
-      - name: val2
-        short: v2
-        long: value2
+    use: "test1"
     run: |
-      echo {{val}}
-      echo {{val2}}
+      echo test
+
+  - task:
+    use: "test2"
+    flags:
+      - name: value
+        short: v
+        long: val
+    run: |
+      echo {{value}}

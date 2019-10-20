@@ -49,9 +49,9 @@ func (c *CLI) Run(args []string) error {
 }
 
 func (c *CLI) ParseCalcium() (*calcium.Calcium, error) {
-	b, err := ioutil.ReadFile("testdata/calcium.yaml")
+	b, err := ioutil.ReadFile("calcium.yml")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot find calcium.yml, Please place")
 	}
 
 	ca, err := calcium.New(b)
