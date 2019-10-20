@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/pkg/errors"
@@ -19,9 +20,7 @@ type CLI struct {
 
 func (c *CLI) Routes() error {
 	if len(c.Args) < 2 {
-		if err := c.Usage(); err != nil {
-			return errors.WithStack(err)
-		}
+		c.Usage()
 		return nil
 	}
 
@@ -31,9 +30,8 @@ func (c *CLI) Routes() error {
 			return errors.WithStack(err)
 		}
 	default:
-		if err := c.Usage(); err != nil {
-			return errors.WithStack(err)
-		}
+		c.Usage()
+		return fmt.Errorf("Undefined command : %s", c.Args[1])
 	}
 	return nil
 }

@@ -24,7 +24,7 @@ func (c *CLI) Run() error {
 		return errors.WithStack(err)
 	}
 
-	fs, err := c.ParseFlags()
+	fs, err := c.parseFlags()
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -34,14 +34,14 @@ func (c *CLI) Run() error {
 		return errors.WithStack(err)
 	}
 
-	if err := c.Execute(script); err != nil {
+	if err := c.execute(script); err != nil {
 		return errors.WithStack(err)
 	}
 
 	return nil
 }
 
-func (c *CLI) ParseFlags() (map[string]string, error) {
+func (c *CLI) parseFlags() (map[string]string, error) {
 	flagMap := map[string]string{}
 
 	if len(c.Args) < 4 {
@@ -73,7 +73,7 @@ func (c *CLI) ParseFlags() (map[string]string, error) {
 	return flagMap, nil
 }
 
-func (c *CLI) Execute(s string) error {
+func (c *CLI) execute(s string) error {
 	cmd := exec.Command("sh", "-c", s)
 
 	out, err := cmd.CombinedOutput()
