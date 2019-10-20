@@ -31,10 +31,10 @@ tasks:
     run: |
       echo {{value}}
 
-$ calcium test1 # call task test1
+$ calcium run test1 # call task test1
 test
 
-$ calcium test2 -v hoge # call task test2
+$ calcium run test2 -v hoge # call task test2
 hoge
 ```
 
