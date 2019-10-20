@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/NasSilverBullet/calcium/cmd/cli"
@@ -23,7 +24,12 @@ func run() error {
 		Err: os.Stderr,
 	}
 
-	if err := c.Run(os.Args); err != nil {
+	yaml, err := ioutil.ReadFile("calcium.yml")
+	if err != nil {
+		return fmt.Errorf("cannot find calcium.yml, Please place")
+	}
+
+	if err := c.Run(os.Args, yaml); err != nil {
 		return err
 	}
 

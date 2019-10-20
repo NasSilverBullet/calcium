@@ -3,7 +3,6 @@ package cli
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os/exec"
 	"strings"
 
@@ -20,8 +19,8 @@ type CLI struct {
 	In, Out, Err io.Writer
 }
 
-func (c *CLI) Run(args []string) error {
-	ca, err := c.ParseCalcium()
+func (c *CLI) Run(args []string, yaml []byte) error {
+	ca, err := calcium.New(yaml)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -46,20 +45,6 @@ func (c *CLI) Run(args []string) error {
 	}
 
 	return nil
-}
-
-func (c *CLI) ParseCalcium() (*calcium.Calcium, error) {
-	b, err := ioutil.ReadFile("calcium.yml")
-	if err != nil {
-		return nil, fmt.Errorf("cannot find calcium.yml, Please place")
-	}
-
-	ca, err := calcium.New(b)
-	if err != nil {
-		return nil, err
-	}
-
-	return ca, nil
 }
 
 func (c *CLI) ParseFlags(args []string) (map[string]string, error) {
