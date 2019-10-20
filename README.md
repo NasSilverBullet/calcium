@@ -12,7 +12,7 @@ $ go install
 ## Usage
 
 ```sh
-$ cat calcium.yaml
+$ cat calcium.yml
 version: 1
 
 tasks:
