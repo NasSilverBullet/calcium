@@ -8,5 +8,9 @@ tasks:
       - name: val
         short: v
         long: value
+      - name: val2
+        short: v2
+        long: value2
     run: |
       echo {{val}}
+      echo {{val2}}
