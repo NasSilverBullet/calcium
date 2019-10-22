@@ -60,7 +60,7 @@ func (c *CLI) parseFlags() (map[string]string, error) {
 	argFlagSection := c.Args[3:]
 
 	if len(argFlagSection)%2 != 0 {
-		return nil, errors.WithStack(fmt.Errorf("InValid Flags"))
+		return nil, errors.WithStack(fmt.Errorf("Invalid flags passed"))
 	}
 
 	for i, a := range argFlagSection {
