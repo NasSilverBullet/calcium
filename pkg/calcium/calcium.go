@@ -57,45 +57,59 @@ func (ca *Calcium) GetTask(use string) (*Task, error) {
 func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 	script := t.Run
 
+	checkGivenFlags := map[string]bool{}
+	for gf, _ := range givenFlags {
+		checkGivenFlags[gf] = false
+	}
+
 	checkTaskFlags := map[string]bool{}
 	for _, tf := range t.Flags {
 		checkTaskFlags[tf.Name] = false
 	}
 
 	for gf, v := range givenFlags {
-		var isCorrectGivenFlag bool
-
 		for _, tf := range t.Flags {
 			if strings.HasPrefix(gf, "-") && gf[1:] == tf.Short {
 				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
-				checkTaskFlags[tf.Name] = true
-				isCorrectGivenFlag = true
+				checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
 				break
 			}
 
 			if strings.HasPrefix(gf, "--") && gf[2:] == tf.Long {
 				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
-				checkTaskFlags[tf.Name] = true
-				isCorrectGivenFlag = true
+				checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
 				break
 			}
 		}
-
-		if !isCorrectGivenFlag {
-			return "", fmt.Errorf("Undefined %s flag in %s task", gf, t.Use)
-		}
 	}
 
-	noGivenFlags := []string{}
+	var errMessage string
 
+	noGivenFlags := []string{}
 	for tfName, isGiven := range checkTaskFlags {
 		if !isGiven {
 			noGivenFlags = append(noGivenFlags, tfName)
 		}
 	}
-
 	if len(noGivenFlags) > 0 {
-		return "", fmt.Errorf("Missing flags: %v ", noGivenFlags)
+		errMessage += fmt.Sprintf("Missing flags: %v ", noGivenFlags)
+	}
+
+	undefinedFlags := []string{}
+	for gfName, isDefined := range checkGivenFlags {
+		if !isDefined {
+			undefinedFlags = append(undefinedFlags, gfName)
+		}
+	}
+	if len(undefinedFlags) > 0 {
+		if len(errMessage) > 0 {
+			errMessage += "\n"
+		}
+		errMessage += fmt.Sprintf("Undefined flags: %v ", undefinedFlags)
+	}
+
+	if len(errMessage) > 0 {
+		return "", fmt.Errorf(errMessage)
 	}
 
 	return script, nil
