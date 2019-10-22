@@ -24,10 +24,10 @@ type Task struct {
 type Flags []*Flag
 
 type Flag struct {
-	Name  string `yaml:"name"`
-	Short string `yaml:"short"`
-	Long  string `yaml:"long"`
-	Type  string `yaml:"type"`
+	Name        string `yaml:"name"`
+	Short       string `yaml:"short"`
+	Long        string `yaml:"long"`
+	Description string `yaml:"description"`
 }
 
 func New(b []byte) (*Calcium, error) {
@@ -113,4 +113,22 @@ func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 	}
 
 	return script, nil
+}
+
+func (t *Task) Usage() string {
+	m := fmt.Sprintf(`Usage:
+  calcium run %s`, t.Use)
+
+	if len(t.Flags) <= 0 {
+		return m
+	}
+
+	m += ` [flags]
+
+Flags:`
+
+	for _, f := range t.Flags {
+		m += fmt.Sprintf("\n  -%s, --%s      %s", f.Short, f.Long, f.Description)
+	}
+	return m
 }

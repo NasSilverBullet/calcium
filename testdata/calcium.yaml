@@ -13,9 +13,11 @@ tasks:
       - name: aflag
         short: a
         long: af
+        description: for a flag
       - name: bflag
         short: b
         long: bf
+        description: for b flag
     run: |
       echo {{aflag}}
-      echo {{bfalg}}
+      echo {{bflag}}
