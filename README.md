@@ -13,7 +13,7 @@ $ go install
 ## Usage
 
 ```sh
-$ cat calcium.yml
+$ cat calcium.yml # Please create calcium.yml on your working directory
 version: 1
 
 tasks:
@@ -35,16 +35,17 @@ tasks:
         short: sv
         long: secval
         description: for echo second value
+
     run: |
       echo {{value}}
       echo {{secondvalue}}
 
 $ calcium run test1 # call task: test1
-test
+test # echo test
 
 $ calcium run test2 -v foo -sv bar # call task: test2
-foo
-bar
+foo # echo {{value}} => echo foo
+bar # echo {{secondvalue}} => echo bar
 
 $ calcium run test2 -v foo # call faild task: test2
 Error:
