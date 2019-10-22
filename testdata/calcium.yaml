@@ -10,8 +10,12 @@ tasks:
   - task:
     use: "test2"
     flags:
-      - name: value
-        short: v
-        long: val
+      - name: aflag
+        short: a
+        long: af
+      - name: bflag
+        short: b
+        long: bf
     run: |
-      echo {{value}}
+      echo {{aflag}}
+      echo {{bfalg}}
