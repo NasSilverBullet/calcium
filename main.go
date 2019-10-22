@@ -20,7 +20,7 @@ func main() {
 func run() error {
 	yaml, err := ioutil.ReadFile("calcium.yml")
 	if err != nil {
-		return fmt.Errorf("Error: \ncannot find calcium.yml, Please place")
+		return fmt.Errorf("Error: \ncannot find calcium.yml, Please create")
 	}
 
 	c := &cli.CLI{
