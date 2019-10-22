@@ -54,31 +54,39 @@ func (ca *Calcium) GetTask(use string) (*Task, error) {
 	return nil, fmt.Errorf("Task definition does not exist")
 }
 
-func (t *Task) Parse(argFlags map[string]string) (string, error) {
+func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 	script := t.Run
 
-	for _, f := range t.Flags {
-		mustache := fmt.Sprintf("{{%s}}", f.Name)
+	var taskFlagCount int
 
-		if strings.Index(t.Run, mustache) < 0 {
-			return "", fmt.Errorf("Can not find %s flag in run section", f.Name)
+	for gf, v := range givenFlags {
+
+		var isCorrectFlag bool
+
+		for _, tf := range t.Flags {
+			if strings.HasPrefix(gf, "-") && gf[1:] == tf.Short {
+				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
+				taskFlagCount++
+				isCorrectFlag = true
+				break
+			}
+
+			if strings.HasPrefix(gf, "--") && gf[2:] == tf.Long {
+				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
+				taskFlagCount++
+				isCorrectFlag = true
+				break
+			}
+
+			if !isCorrectFlag {
+				return "", fmt.Errorf("Undefined %s flag in %s task", gf, t.Use)
+			}
 		}
 
-		var parsed bool
+	}
 
-		if af := argFlags[fmt.Sprintf("-%s", f.Short)]; af != "" {
-			script = strings.ReplaceAll(script, mustache, af)
-			parsed = true
-		}
-
-		if af := argFlags[fmt.Sprintf("--%s", f.Long)]; af != "" {
-			script = strings.ReplaceAll(script, mustache, af)
-			parsed = true
-		}
-
-		if !parsed {
-			return "", fmt.Errorf("No {{%s}} were given", f.Name)
-		}
+	if taskFlagCount < len(t.Flags) {
+		return "", fmt.Errorf("Missing flags in %s task", t.Use)
 	}
 
 	return script, nil
