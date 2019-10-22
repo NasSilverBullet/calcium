@@ -127,8 +127,26 @@ func (t *Task) Usage() string {
 
 Flags:`
 
+	var maxShortLen, maxLongLen int
+
 	for _, f := range t.Flags {
-		m += fmt.Sprintf("\n  -%s, --%s      %s", f.Short, f.Long, f.Description)
+		if sum := len(f.Short); sum > maxShortLen {
+			maxShortLen = sum
+		}
+
+		if sum := len(f.Long); sum > maxLongLen {
+			maxLongLen = sum
+		}
+	}
+
+	for _, f := range t.Flags {
+		m += fmt.Sprintf("\n  -%s, ", f.Short)
+		m += strings.Repeat(" ", maxShortLen-len(f.Short))
+
+		m += fmt.Sprintf("--%s   ", f.Long)
+		m += strings.Repeat(" ", maxLongLen-len(f.Long))
+
+		m += f.Description
 	}
 	return m
 }
