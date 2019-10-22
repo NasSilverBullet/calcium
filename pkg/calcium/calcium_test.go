@@ -111,3 +111,47 @@ func TestTaskParse(t *testing.T) {
 	}
 
 }
+
+func TestTaskUsage(t *testing.T) {
+
+	task1 := &calcium.Task{
+		Use: "test",
+		Flags: calcium.Flags(
+			[]*calcium.Flag{
+				{Name: "test1", Short: "t", Long: "test", Description: "test description"},
+			},
+		),
+		Run: "echo {{test1}}",
+	}
+
+	task2 := &calcium.Task{
+		Use: "test",
+		Flags: calcium.Flags(
+			[]*calcium.Flag{},
+		),
+		Run: "echo {{test1}}",
+	}
+
+	tests := []struct {
+		name string
+		task *calcium.Task
+		want string
+	}{
+		{"Success", task1, `Usage:
+  calcium run test [flags]
+
+Flags:
+  -t, --test   test description`},
+
+		{"SuccessNoFlags", task2, `Usage:
+  calcium run test`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.task.Usage(); tt.want != got {
+				t.Errorf("t.Usage() => want %s, got %s", tt.want, got)
+			}
+		})
+	}
+}
