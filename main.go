@@ -20,7 +20,7 @@ func main() {
 func run() error {
 	yaml, err := ioutil.ReadFile("calcium.yml")
 	if err != nil {
-		return fmt.Errorf("cannot find calcium.yml, Please place")
+		return fmt.Errorf("Error: \ncannot find calcium.yml, Please place")
 	}
 
 	c := &cli.CLI{
@@ -32,7 +32,7 @@ func run() error {
 	}
 
 	if err := c.Routes(); err != nil {
-		return err
+		return fmt.Errorf("Error: \n%w", err)
 	}
 
 	return nil

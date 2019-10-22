@@ -26,15 +26,24 @@ func (c *CLI) Run() error {
 
 	fs, err := c.parseFlags()
 	if err != nil {
+		err = fmt.Errorf(`%w
+
+%s`, err, t.Usage())
 		return errors.WithStack(err)
 	}
 
 	script, err := t.Parse(fs)
 	if err != nil {
+		err = fmt.Errorf(`%w
+
+%s`, err, t.Usage())
 		return errors.WithStack(err)
 	}
 
 	if err := c.execute(script); err != nil {
+		err = fmt.Errorf(`%w
+
+%s`, err, t.Usage())
 		return errors.WithStack(err)
 	}
 
