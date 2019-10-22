@@ -93,7 +93,7 @@ func TestTaskParse(t *testing.T) {
 	}{
 		{"SuccessShort", task1, map[string]string{"-t": "test"}, "echo test", false},
 		{"SuccessLong", task1, map[string]string{"--test": "test"}, "echo test", false},
-		{"ErrorNoGivenFlags", task1, map[string]string{"--hoge": ""}, "", true},
+		{"ErrorNoGivenFlags", task1, map[string]string{}, "", true},
 		{"ErrorundefinedFlag", task2, map[string]string{"-t": "test"}, "", true},
 	}
 
