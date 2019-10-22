@@ -1,6 +1,6 @@
 # calcium
 
-## this is task runner inspired by Makefile
+## This is task runner inspired by Makefile
 
 ## Installation
 
