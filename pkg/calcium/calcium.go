@@ -67,19 +67,17 @@ func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 		checkTaskFlags[tf.Name] = false
 	}
 
-	for gf, v := range givenFlags {
-		for _, tf := range t.Flags {
-			if strings.HasPrefix(gf, "-") && gf[1:] == tf.Short {
-				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
-				checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
-				break
-			}
+	for _, tf := range t.Flags {
+		if gf, gfv := "-"+tf.Short, givenFlags["-"+tf.Short]; gfv != "" {
+			script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), gfv)
+			checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
+			continue
+		}
 
-			if strings.HasPrefix(gf, "--") && gf[2:] == tf.Long {
-				script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), v)
-				checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
-				break
-			}
+		if gf, gfv := "--"+tf.Long, givenFlags["--"+tf.Long]; gfv != "" {
+			script = strings.ReplaceAll(script, fmt.Sprintf("{{%s}}", tf.Name), gfv)
+			checkGivenFlags[gf], checkTaskFlags[tf.Name] = true, true
+			continue
 		}
 	}
 
