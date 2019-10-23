@@ -10,11 +10,16 @@ import (
 )
 
 func (c *CLI) Run() error {
+	yaml, err := c.Read()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
 	if len(c.Args) < 3 {
 		return errors.WithStack(fmt.Errorf("Please choose task"))
 	}
 
-	ca, err := calcium.New(c.Yaml)
+	ca, err := calcium.New(yaml)
 	if err != nil {
 		return errors.WithStack(err)
 	}

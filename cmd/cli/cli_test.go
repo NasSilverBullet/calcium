@@ -48,7 +48,7 @@ func TestCLIRoutes(t *testing.T) {
 				&bytes.Buffer{},
 				&bytes.Buffer{},
 				tt.args,
-				tt.yaml,
+				cli.YamlFunc(func() ([]byte, error) { return tt.yaml, nil }),
 			}
 			if err := c.Routes(); err != nil && !tt.errexpected {
 				t.Errorf("Unexpected error : %v", err)
