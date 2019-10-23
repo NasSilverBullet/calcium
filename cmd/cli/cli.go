@@ -46,7 +46,7 @@ func (c *CLI) Read() ([]byte, error) {
 
 func (c *CLI) Routes() error {
 	if len(c.Args) < 2 {
-		c.Usage()
+		fmt.Fprintln(c.Out, c.Usage())
 		return nil
 	}
 
@@ -56,8 +56,9 @@ func (c *CLI) Routes() error {
 			return errors.WithStack(err)
 		}
 	default:
-		c.Usage()
-		return fmt.Errorf("Undefined command : %s", c.Args[1])
+		return fmt.Errorf(`Undefined command: %s
+
+%s`, c.Args[1], c.Usage())
 	}
 	return nil
 }

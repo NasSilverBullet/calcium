@@ -1,7 +1,9 @@
 package cli
 
-import "fmt"
+func (c *CLI) Usage() string {
+	return `Usage:
+  ca [command]
 
-func (c *CLI) Usage() {
-	fmt.Fprintf(c.Out, "Usage")
+Commands:
+  run      run script with task definition`
 }

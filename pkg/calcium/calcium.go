@@ -115,7 +115,7 @@ func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 
 func (t *Task) Usage() string {
 	m := fmt.Sprintf(`Usage:
-  calcium run %s`, t.Use)
+  ca run %s`, t.Use)
 
 	if len(t.Flags) <= 0 {
 		return m
