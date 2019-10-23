@@ -11,10 +11,10 @@ import (
 func main() {
 	if err := run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		os.Exit(cli.ExitCodeOK)
+		os.Exit(cli.ExitCodeError)
 	}
 
-	os.Exit(cli.ExitCodeError)
+	os.Exit(cli.ExitCodeOK)
 }
 
 func run() error {

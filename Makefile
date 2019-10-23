@@ -1,5 +1,5 @@
 # variable
-binary=calcium
+binary=ca
 
 # command
 .PHONY: help
@@ -8,8 +8,12 @@ help:
 
 .PHONY: build
 build: ## build command
-	go build
+	go build ./cmd/ca
+
+.PHONY: test
+test: ## run test command
+	go test -cover ./...
 
 .PHONY: run
-run: build ## run test command
-	./$(binary) aaa
+run: build ## run sample
+	./$(binary) run test2 -v hoge -sv huga
