@@ -6,7 +6,7 @@
 
 ```sh
 # Please set $GOPATH
-$ go get -u github.com/NasSilverBullet/calcium
+$ go get -u github.com/NasSilverBullet/calcium/cmd/ca
 ```
 
 ## Usage
