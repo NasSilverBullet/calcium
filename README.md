@@ -6,8 +6,7 @@
 
 ```sh
 # Please set $GOPATH
-$ git clone https://github.com/NasSilverBullet/calcium
-$ go install
+$ go get -u github.com/NasSilverBullet/calcium
 ```
 
 ## Usage
@@ -42,21 +41,21 @@ tasks:
       echo {{secondvalue}}
 
 # call task: test1
-$ calcium run test1
+$ ca run test1
 test # echo test
 
 # call task: test2
-$ calcium run test2 -v foo -sv bar
+$ ca run test2 -v foo -sv bar
 foo # echo {{value}} => echo foo
 bar # echo {{secondvalue}} => echo bar
 
 # call faild task: test2
-$ calcium run test2 -v foo
+$ ca run test2 -v foo
 Error:
 Missing flags: [secondvalue]
 
 Usage:
-  calcium run test2 [flags]
+  ca run test2 [flags]
 
 Flags:
   -v,  --val      for echo value
