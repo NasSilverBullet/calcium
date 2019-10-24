@@ -5,11 +5,12 @@ import (
 	"strings"
 )
 
+// Parse Task's Run field from flags
 func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 	script := t.Run
 
 	checkGivenFlags := map[string]bool{}
-	for gf, _ := range givenFlags {
+	for gf := range givenFlags {
 		checkGivenFlags[gf] = false
 	}
 
@@ -64,6 +65,7 @@ func (t *Task) Parse(givenFlags map[string]string) (string, error) {
 	return script, nil
 }
 
+// Usage give Task's usage
 func (t *Task) Usage() string {
 	m := fmt.Sprintf(`Usage:
   ca run %s`, t.Use)

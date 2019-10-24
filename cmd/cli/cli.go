@@ -9,28 +9,37 @@ import (
 )
 
 const (
-	ExitCodeOK    = 0
+	// ExitCodeOK is no error status
+	ExitCodeOK = 0
+
+	// ExitCodeError is error status
 	ExitCodeError = 1
 )
 
+// CalciumFile is file name
 const CalciumFile = "calcium.yml"
 
+// CLI for commad
 type CLI struct {
 	In, Out, Err io.Writer
 	Args         []string
 	Yaml
 }
 
+// Yaml behave yaml
 type Yaml interface {
 	Read() ([]byte, error)
 }
 
+// YamlFunc implements Yaml interface
 type YamlFunc func() ([]byte, error)
 
+// Read return yaml
 func (f YamlFunc) Read() ([]byte, error) {
 	return f()
 }
 
+// Read return Yaml
 func (c *CLI) Read() ([]byte, error) {
 	if c.Yaml != nil {
 		return c.Yaml.Read()
@@ -44,6 +53,7 @@ func (c *CLI) Read() ([]byte, error) {
 	return b, nil
 }
 
+// Routes is command routing
 func (c *CLI) Routes() error {
 	if len(c.Args) < 2 {
 		fmt.Fprintln(c.Out, c.Usage())

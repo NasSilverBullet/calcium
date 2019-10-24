@@ -9,6 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Run execute shell script
 func (c *CLI) Run() error {
 	yaml, err := c.Read()
 	if err != nil {
