@@ -44,8 +44,8 @@ func TestCalciumGetTask(t *testing.T) {
 		want        *calcium.Task
 		errexpected bool
 	}{
-		{"Success", &calcium.Calcium{Tasks: calcium.Tasks([]*calcium.Task{&calcium.Task{Use: "test1"}, &calcium.Task{Use: "test"}})}, "test", &calcium.Task{Use: "test"}, false},
-		{"Success", &calcium.Calcium{Tasks: calcium.Tasks([]*calcium.Task{&calcium.Task{Use: "error"}})}, "test", nil, true},
+		{"Success", &calcium.Calcium{Tasks: calcium.Tasks([]*calcium.Task{{Use: "test1"}, {Use: "test"}})}, "test", &calcium.Task{Use: "test"}, false},
+		{"Error", &calcium.Calcium{Tasks: calcium.Tasks([]*calcium.Task{{Use: "error"}})}, "test", nil, true},
 	}
 
 	for _, tt := range tests {
