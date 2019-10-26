@@ -16,17 +16,23 @@ func (c *CLI) Run() error {
 		return errors.WithStack(err)
 	}
 
-	if len(c.Args) < 3 {
-		return errors.WithStack(fmt.Errorf("Please choose task"))
-	}
-
 	ca, err := calcium.New(yaml)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
+	if len(c.Args) < 3 {
+		err := fmt.Errorf(`Please choose task
+
+%s`, ca.Tasks.Usage())
+		return errors.WithStack(err)
+	}
+
 	t, err := ca.GetTask(c.Args[2])
 	if err != nil {
+		err = fmt.Errorf(`%w
+
+%s`, err, ca.Tasks.Usage())
 		return errors.WithStack(err)
 	}
 
