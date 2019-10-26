@@ -13,11 +13,22 @@ import (
 func (c *CLI) Run() error {
 	yaml, err := c.Read()
 	if err != nil {
+		err = fmt.Errorf(`%w
+
+%s`, err, c.Usage())
 		return errors.WithStack(err)
 	}
 
 	ca, err := calcium.New(yaml)
 	if err != nil {
+		sep := strings.Index(err.Error(), " into")
+		if sep > 0 {
+			err = fmt.Errorf("%s", err.Error()[:sep])
+		}
+
+		err = fmt.Errorf(`%w
+
+%s`, err, c.Usage())
 		return errors.WithStack(err)
 	}
 

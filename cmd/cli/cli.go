@@ -47,7 +47,7 @@ func (c *CLI) Read() ([]byte, error) {
 
 	b, err := ioutil.ReadFile(CalciumFile)
 	if err != nil {
-		return nil, fmt.Errorf("Error: \ncannot find %s, Please create", CalciumFile)
+		return nil, fmt.Errorf("cannot find %s, Please create", CalciumFile)
 	}
 
 	return b, nil
