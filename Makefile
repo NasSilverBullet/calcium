@@ -18,6 +18,10 @@ test: ## run test command
 run: build ## run sample
 	./$(binary) run test2 -v hoge -sv huga
 
+.PHONY: install
+install: build ## go install
+	cd ./cmd/ca && go install
+
 .PHONY: lint
 lint: ## execute lint
 	@echo --------------------------------------------------------------------------------------
